@@ -1,7 +1,7 @@
 #include <Servo.h>
-int cambio = 2;
-int ledA = 8;
-int ledB = 5;
+int cambio = 13;
+int ledA = 2;
+int ledB = 3;
 
 Servo Servom1;
 int pot1 = A0;
@@ -27,6 +27,15 @@ int res4 = 0;
 int motor4 = 6;
 int mp4 = 0;
 
+int md1 = 12;
+int md2 = 8;
+int md3 = 7;
+int md4 = 4;
+int av = A4;
+int ret = A5;
+
+int cont = 0;
+
 void setup() {
   // put your setup code here, to run once:
     Serial.begin(9600);
@@ -34,6 +43,14 @@ void setup() {
     Servom2.attach(motor2);
     Servom3.attach(motor3);
     Servom4.attach(motor4);
+    pinMode(ledA, OUTPUT);
+    pinMode(ledB, OUTPUT);
+    pinMode(md1, OUTPUT);
+    pinMode(md2, OUTPUT);
+    pinMode(md3, OUTPUT);
+    pinMode(md4, OUTPUT);
+    pinMode(av, INPUT);
+    pinMode(ret, INPUT);
 }
 
 void loop() {
@@ -64,6 +81,36 @@ void loop() {
         Servom4.write(mp4);
     }
     else {
+      // Modo automático con contador
+      digitalWrite(ledB, HIGH);
+      digitalWrite(ledA, LOW);
+
+      // Transición con debounce
+        if (digitalRead(av) == HIGH && digitalRead(ret) == LOW) {
+            delay(10);  // Espera inicial para debounce
+            if (digitalRead(av) == HIGH) {  // Verificación después del delay
+                cont = (cont + 1);
+                // Reiniciar contador si es mayor a 5
+                if (cont > 6) {
+                    cont = 0;
+                    }
+            while (digitalRead(av) == HIGH) {}  // Espera a que se suelte el botón
+            delay(50);  // Debounce final
+            }
+        } 
+        else if (digitalRead(ret) == HIGH && digitalRead(av) == LOW) {
+            delay(10);
+            if (digitalRead(ret) == HIGH) {
+                cont = (cont - 1);
+            // Reiniciar contador si es menor a 0
+                if (cont < 0) {
+                    cont = 0;
+                    }
+            while (digitalRead(ret) == HIGH) {}
+            delay(50);
+        }
+    }
+      
       switch (cont) {
             case 0:
                 Servom1.write(0);

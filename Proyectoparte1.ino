@@ -114,9 +114,9 @@ void loop() {
       switch (cont) {
             case 0:
                 Servom1.write(0);
-                Servom2.write(0);
-                Servom3.write(0);
-                Servom4.write(0);
+                Servom2.write(68);
+                Servom3.write(127);
+                Servom4.write(180);
                 
                 digitalWrite(md1, LOW);
                 digitalWrite(md2, LOW);
@@ -126,6 +126,11 @@ void loop() {
                 break;
 
             case 1:
+                Servom1.write(0);
+                Servom2.write(148);
+                Servom3.write(94);
+                Servom4.write(134);
+                
                 digitalWrite(md1, HIGH);
                 digitalWrite(md2, LOW);
                 digitalWrite(md3, LOW);
@@ -133,6 +138,11 @@ void loop() {
                 break;
 
             case 2:
+                Servom1.write(0);
+                Servom2.write(148);
+                Servom3.write(94);
+                Servom4.write(180);
+              
                 digitalWrite(md1, LOW);
                 digitalWrite(md2, HIGH);
                 digitalWrite(md3, LOW);
@@ -140,6 +150,11 @@ void loop() {
                 break;
 
             case 3:
+                Servom1.write(0);
+                Servom2.write(68);
+                Servom3.write(127);
+                Servom4.write(180);
+              
                 digitalWrite(md1, LOW);
                 digitalWrite(md2, LOW);
                 digitalWrite(md3, HIGH);
@@ -147,8 +162,37 @@ void loop() {
                 break;
 
             case 4:
+                Servom1.write(180);
+                Servom2.write(96);
+                Servom3.write(156);
+                Servom4.write(134);
+              
                 digitalWrite(md1, LOW);
                 digitalWrite(md2, LOW);
+                digitalWrite(md3, LOW);
+                digitalWrite(md4, HIGH);
+                break;
+
+            case 5:
+                Servom1.write(180);
+                Servom2.write(96);
+                Servom3.write(156);
+                Servom4.write(134);
+              
+                digitalWrite(md1, HIGH);
+                digitalWrite(md2, LOW);
+                digitalWrite(md3, LOW);
+                digitalWrite(md4, HIGH);
+                break;
+
+            case 6:
+                Servom1.write(90);
+                Servom2.write(73);
+                Servom3.write(102);
+                Servom4.write(180);
+              
+                digitalWrite(md1, HIGH);
+                digitalWrite(md2, HIGH);
                 digitalWrite(md3, LOW);
                 digitalWrite(md4, HIGH);
                 break;

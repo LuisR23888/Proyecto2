@@ -62,4 +62,49 @@ void loop() {
         res4 = analogRead(pot4);
         mp4 = map(res4, 0, 1023, 0, 180);
         Servom4.write(mp4);
+    }
+    else {
+      switch (cont) {
+            case 0:
+                Servom1.write(0);
+                Servom2.write(0);
+                Servom3.write(0);
+                Servom4.write(0);
+                
+                digitalWrite(md1, LOW);
+                digitalWrite(md2, LOW);
+                digitalWrite(md3, LOW);
+                digitalWrite(md4, LOW);
+
+                break;
+
+            case 1:
+                digitalWrite(md1, HIGH);
+                digitalWrite(md2, LOW);
+                digitalWrite(md3, LOW);
+                digitalWrite(md4, LOW);
+                break;
+
+            case 2:
+                digitalWrite(md1, LOW);
+                digitalWrite(md2, HIGH);
+                digitalWrite(md3, LOW);
+                digitalWrite(md4, LOW);
+                break;
+
+            case 3:
+                digitalWrite(md1, LOW);
+                digitalWrite(md2, LOW);
+                digitalWrite(md3, HIGH);
+                digitalWrite(md4, LOW);
+                break;
+
+            case 4:
+                digitalWrite(md1, LOW);
+                digitalWrite(md2, LOW);
+                digitalWrite(md3, LOW);
+                digitalWrite(md4, HIGH);
+                break;
+    }
+  }
 }

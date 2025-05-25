@@ -35,6 +35,29 @@ int av = A4;
 int ret = A5;
 
 int cont = 0;
+int t1=0;
+int t2=0;
+int t3=0;
+int t4=0;
+int a1=0;
+int a2=0;
+int a3=0;
+int a4=0;
+//Función para encender leds
+void leds(bool t1, bool t2, bool t3, bool t4){
+  digitalWrite(md1,t1);
+  digitalWrite(md2,t2);
+  digitalWrite(md3,t3);
+  digitalWrite(md4,t4);
+}
+//Función para movimiento de servos segun grado 
+void servos(int a1, int a2, int a3, int a4){
+    Servom1.write(a1);
+    Servom2.write(a2);
+    Servom3.write(a3);
+    Servom4.write(a4);
+}
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -56,7 +79,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
     bool modo = digitalRead(cambio);
-
+    leds(t1, t2, t3, t5);
+    servos(a1, a2, a3, a4);
     if (modo == HIGH) {
         // Modo manual
         digitalWrite(ledA, HIGH);
@@ -113,88 +137,38 @@ void loop() {
       
       switch (cont) {
             case 0:
-                Servom1.write(0);
-                Servom2.write(68);
-                Servom3.write(127);
-                Servom4.write(180);
-                
-                digitalWrite(md1, LOW);
-                digitalWrite(md2, LOW);
-                digitalWrite(md3, LOW);
-                digitalWrite(md4, LOW);
-
+                leds(0,0,0,0);
+                servos(0,68,127,180);
                 break;
 
             case 1:
-                Servom1.write(0);
-                Servom2.write(148);
-                Servom3.write(94);
-                Servom4.write(134);
-                
-                digitalWrite(md1, HIGH);
-                digitalWrite(md2, LOW);
-                digitalWrite(md3, LOW);
-                digitalWrite(md4, LOW);
+                leds(1,0,0,0);
+                servos(0,148,94,134);
                 break;
 
             case 2:
-                Servom1.write(0);
-                Servom2.write(148);
-                Servom3.write(94);
-                Servom4.write(180);
-              
-                digitalWrite(md1, LOW);
-                digitalWrite(md2, HIGH);
-                digitalWrite(md3, LOW);
-                digitalWrite(md4, LOW);
+                leds(0,1,0,0);
+                servos(0,148,94,180);              
                 break;
 
             case 3:
-                Servom1.write(0);
-                Servom2.write(68);
-                Servom3.write(127);
-                Servom4.write(180);
-              
-                digitalWrite(md1, LOW);
-                digitalWrite(md2, LOW);
-                digitalWrite(md3, HIGH);
-                digitalWrite(md4, LOW);
+                leds(0,0,1,0);
+                servos(0,68,127,180);              
                 break;
 
             case 4:
-                Servom1.write(180);
-                Servom2.write(96);
-                Servom3.write(156);
-                Servom4.write(134);
-              
-                digitalWrite(md1, LOW);
-                digitalWrite(md2, LOW);
-                digitalWrite(md3, LOW);
-                digitalWrite(md4, HIGH);
+                leds(0,0,0,1);
+                servos(180,96,156,134);
                 break;
 
             case 5:
-                Servom1.write(180);
-                Servom2.write(96);
-                Servom3.write(156);
-                Servom4.write(134);
-              
-                digitalWrite(md1, HIGH);
-                digitalWrite(md2, LOW);
-                digitalWrite(md3, LOW);
-                digitalWrite(md4, HIGH);
+                leds(1,0,0,1);
+                servos(180,96,156,134);
                 break;
 
             case 6:
-                Servom1.write(90);
-                Servom2.write(73);
-                Servom3.write(102);
-                Servom4.write(180);
-              
-                digitalWrite(md1, HIGH);
-                digitalWrite(md2, HIGH);
-                digitalWrite(md3, LOW);
-                digitalWrite(md4, HIGH);
+                leds(1,1,0,1);
+                servos(90,73,102,180);
                 break;
     }
   }

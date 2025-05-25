@@ -3,6 +3,7 @@ int cambio = 13;
 int ledA = 2;
 int ledB = 3;
 
+//Configuración de cada servo
 Servo Servom1;
 int pot1 = A0;
 int res1 = 0;
@@ -27,22 +28,19 @@ int res4 = 0;
 int motor4 = 6;
 int mp4 = 0;
 
-int md1 = 12;
-int md2 = 8;
-int md3 = 7;
-int md4 = 4;
+int md1 = 8;
+int md2 = 7;
+int md3 = 4;
+int md4 = 12;
 int av = A4;
 int ret = A5;
 
 int cont = 0;
-int t1=0;
-int t2=0;
-int t3=0;
-int t4=0;
-int a1=0;
-int a2=0;
-int a3=0;
-int a4=0;
+
+//Para impresión de ángulos cada 100 ms
+unsigned long tiempoAnterior = 0;
+const int intervaloImpresion = 100; 
+
 //Función para encender leds
 void leds(bool t1, bool t2, bool t3, bool t4){
   digitalWrite(md1,t1);
@@ -56,9 +54,13 @@ void servos(int a1, int a2, int a3, int a4){
     Servom2.write(a2);
     Servom3.write(a3);
     Servom4.write(a4);
+
+    //Permite imprimir los ángulos en modo automático
+    mp1 = a1;
+    mp2 = a2;
+    mp3 = a3;
+    mp4 = a4;
 }
-unsigned long previousMillis = 0;
-const long tiempo = 200; // Imprimir cada 200 milisegundos
 
 void setup() {
   // put your setup code here, to run once:
@@ -80,8 +82,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
     bool modo = digitalRead(cambio);
-    leds(t1, t2, t3, t4);
-    servos(a1, a2, a3, a4);
+    
     if (modo == HIGH) {
         // Modo manual
         digitalWrite(ledA, HIGH);
@@ -104,18 +105,7 @@ void loop() {
         res4 = analogRead(pot4);
         mp4 = map(res4, 0, 1023, 0, 180);
         Servom4.write(mp4);
-      
-      unsigned long currentMillis = millis();
-        if (currentMillis - previousMillis >= tiempo) {
-        previousMillis = currentMillis;
-          Serial.println("Angulo Servo 1: ");
-          Serial.println(mp1);
-          Serial.println("Angulo Servo 2: ");
-          Serial.println(mp2);
-          Serial.println("Angulo Servo 3: ");
-          Serial.println(mp3);
-          Serial.println("Angulo Servo 4: ");
-          Serial.println(mp4);    
+    
     }
     else {
       // Modo automático con contador
@@ -132,7 +122,7 @@ void loop() {
                     cont = 0;
                     }
             while (digitalRead(av) == HIGH) {}  // Espera a que se suelte el botón
-            delay(50);  // Debounce final
+            delay(50);
             }
         } 
         else if (digitalRead(ret) == HIGH && digitalRead(av) == LOW) {
@@ -151,45 +141,53 @@ void loop() {
       switch (cont) {
             case 0:
                 leds(0,0,0,0);
-                servos(0,68,127,180);
-                Serial.println(" Posición 0: Servos en 0, 68, 127, 180");
+                servos(0,127,68,180);
                 break;
 
             case 1:
                 leds(1,0,0,0);
-                servos(0,148,94,134);
-                Serial.println(" Posición 1: Servos en 0, 148, 94, 134");
+                servos(0,85,163,134);
                 break;
 
             case 2:
                 leds(0,1,0,0);
-                servos(0,148,94,180); 
-                Serial.println(" Posición 2: Servos en 0, 148, 94, 180");
+                servos(0,85,163,180); 
                 break;
 
             case 3:
                 leds(0,0,1,0);
-                servos(0,68,127,180);  
-                Serial.println(" Posición 3: Servos en 0, 68, 127, 180");
+                servos(0,130,98,180);  
                 break;
 
             case 4:
                 leds(0,0,0,1);
-                servos(180,96,156,134);
-                Serial.println(" Posición 4: Servos en 180, 96, 156, 134");
+                servos(180,156,96,134);
                 break;
 
             case 5:
                 leds(1,0,0,1);
-                servos(180,96,156,134);
-                Serial.println(" Posición 5: Servos en 180, 96, 156, 134");
+                servos(180,156,96,134);
                 break;
 
             case 6:
                 leds(1,1,0,1);
-                servos(90,73,102,180);
-                Serial.println(" Posición 6: Servos en 90, 73, 102, 180");
+                servos(90,102,73,180);
                 break;
     }
   }
+
+  if (millis() - tiempoAnterior >= intervaloImpresion) {
+        tiempoAnterior = millis();
+        
+        // Usar un solo Serial.print
+        Serial.print("Posiciones: ");
+        Serial.print(mp1);
+        Serial.print(", ");
+        Serial.print(mp2);
+        Serial.print(", ");
+        Serial.print(mp3);
+        Serial.print(", ");
+        Serial.println(mp4);
+    }
+  
 }

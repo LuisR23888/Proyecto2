@@ -57,7 +57,8 @@ void servos(int a1, int a2, int a3, int a4){
     Servom3.write(a3);
     Servom4.write(a4);
 }
-
+unsigned long previousMillis = 0;
+const long tiempo = 200; // Imprimir cada 200 milisegundos
 
 void setup() {
   // put your setup code here, to run once:
@@ -79,7 +80,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
     bool modo = digitalRead(cambio);
-    leds(t1, t2, t3, t5);
+    leds(t1, t2, t3, t4);
     servos(a1, a2, a3, a4);
     if (modo == HIGH) {
         // Modo manual
@@ -103,6 +104,18 @@ void loop() {
         res4 = analogRead(pot4);
         mp4 = map(res4, 0, 1023, 0, 180);
         Servom4.write(mp4);
+      
+      unsigned long currentMillis = millis();
+        if (currentMillis - previousMillis >= tiempo) {
+        previousMillis = currentMillis;
+          Serial.println("Angulo Servo 1: ");
+          Serial.println(mp1);
+          Serial.println("Angulo Servo 2: ");
+          Serial.println(mp2);
+          Serial.println("Angulo Servo 3: ");
+          Serial.println(mp3);
+          Serial.println("Angulo Servo 4: ");
+          Serial.println(mp4);    
     }
     else {
       // Modo automático con contador
@@ -139,36 +152,43 @@ void loop() {
             case 0:
                 leds(0,0,0,0);
                 servos(0,68,127,180);
+                Serial.println(" Posición 0: Servos en 0, 68, 127, 180");
                 break;
 
             case 1:
                 leds(1,0,0,0);
                 servos(0,148,94,134);
+                Serial.println(" Posición 1: Servos en 0, 148, 94, 134");
                 break;
 
             case 2:
                 leds(0,1,0,0);
-                servos(0,148,94,180);              
+                servos(0,148,94,180); 
+                Serial.println(" Posición 2: Servos en 0, 148, 94, 180");
                 break;
 
             case 3:
                 leds(0,0,1,0);
-                servos(0,68,127,180);              
+                servos(0,68,127,180);  
+                Serial.println(" Posición 3: Servos en 0, 68, 127, 180");
                 break;
 
             case 4:
                 leds(0,0,0,1);
                 servos(180,96,156,134);
+                Serial.println(" Posición 4: Servos en 180, 96, 156, 134");
                 break;
 
             case 5:
                 leds(1,0,0,1);
                 servos(180,96,156,134);
+                Serial.println(" Posición 5: Servos en 180, 96, 156, 134");
                 break;
 
             case 6:
                 leds(1,1,0,1);
                 servos(90,73,102,180);
+                Serial.println(" Posición 6: Servos en 90, 73, 102, 180");
                 break;
     }
   }
